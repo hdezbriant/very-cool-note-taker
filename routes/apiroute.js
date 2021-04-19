@@ -23,7 +23,7 @@ module.exports = function (app) {
   app.post('/api/notes', (req, res) => {
     notes
       .push(req.body)
-      .then(() => {return notes.getAll()})
+      .then(() => { return notes.getAll() })
       .then((noteData) => {
         res.json(noteData);
       })
@@ -32,15 +32,18 @@ module.exports = function (app) {
         return res.status(500).end();
       });
   });
-}
-  // This code isn't part of the assignment. This route was added to easily
-  // clear out all the table data to facilitate demonstration. Don"t worry about
-  // it!
-  // app.post('/api/clear', (req, res) => {
-  //   Promise.all([tables.clear(), waitingList.clear()])
-  //     .then(() => res.json({ ok: true }))
-  //     .catch((error) => {
-  //       console.log(error);
-  //       res.status(500).end();
-  //     });
-  // });
+
+  app.delete('/api/notes/:id', (req, res) => {
+    const chosenNoteId = req.params.id;
+    console.log(chosenNoteId);
+    notes
+      .delete(chosenNoteId)
+      .then(() => {
+        res.json();
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).end();
+      });
+  });
+};
