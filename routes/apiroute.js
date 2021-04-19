@@ -9,9 +9,9 @@ module.exports = function (app) {
     // read notes data from file
     notes
       .getAll()
-      .then((data) => {
+      .then((noteData) => {
         // send notes data json in response
-        res.json(data);
+        res.json(noteData);
       })
       .catch((err) => {
         console.log(err);
@@ -22,10 +22,10 @@ module.exports = function (app) {
 
   app.post('/api/notes', (req, res) => {
     notes
-      .getAll()
+      .push(req.body)
+      .then(() => {return notes.getAll()})
       .then((noteData) => {
-        // add to notes and return promise
-        return notes.push(req.body);
+        res.json(noteData);
       })
       .catch((err) => {
         console.log(err);
